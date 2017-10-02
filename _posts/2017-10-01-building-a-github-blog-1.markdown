@@ -84,7 +84,7 @@ To make this blog live, we will first need to create the repository on
   initialize with a `README.md` just yet. After you click `Create Repository`,
   follow the instructions to create a new repository on the command line:
 ```bash
-$echo "# <username>.github.io" >> README.md
+$ echo "# <username>.github.io" >> README.md
 #this creates the readme file and adds the project name as the only line
 $ git init
 $ git add README.md
@@ -203,7 +203,7 @@ Next, copy the contents of minima's `_layouts` folder to your newly created fold
 ```bash
 $ cp $(bundle show minima)/_layouts/* _layouts/
 ```
-Finally since we want to use the default template from the `jekyll-theme-slate`
+Finally, since we want to use the default template from the `jekyll-theme-slate`
   gem, remove the `defualt.html` file:
 ```bash
 $ rm _layouts/default.html
@@ -217,3 +217,9 @@ Now if you serve the site with `bundle exec jekyll serve` you will see a very
 ![slate_theme]({{ site.url }}/images/slate_theme.png)
 
 ## Enabling Comments
+Because Jekyll sites do not come with a database, there is no way to enable
+  comments without using a third-party service. In this part of the tutorial,
+  we will use **Disqus** to enable comments on our blog posts. It's fairly simple:
+
+1. Sign up and register your site with [Disqus](https://disqus.com).
+    -
