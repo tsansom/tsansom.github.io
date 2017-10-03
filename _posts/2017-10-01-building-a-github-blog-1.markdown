@@ -222,4 +222,77 @@ Because Jekyll sites do not come with a database, there is no way to enable
   we will use **Disqus** to enable comments on our blog posts. It's fairly simple:
 
 1. Sign up and register your site with [Disqus](https://disqus.com).
-    -
+    - This will give you a *short name* which we will use in a moment
+2. Make a new directory called _includes
+    ```bash
+    $ mkdir _includes
+    ```  
+
+3. Create a file in the _includes folder called `disqus_comments.html` and add
+  the following:  
+
+    ```html
+    {% raw %}{% if page.comments %}{% endraw %}
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = "http://<username>.github.io{% raw %}{{ page.url }}{% endraw %}"; // <--- use canonical URL
+            this.page.identifier = "{% raw %}{{ page.id }}{% endraw %}";
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+
+            s.src = '//{% raw %}{{  site.disqus.shortname }}{% endraw %}.disqus.com/embed.js'; // <--- use Disqus shortname
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    {% raw %}{% endif %}{% endraw %}
+    ```
+
+
+4. Change `<username>` to match your github username
+
+5. Edit `_config.yml` and add the following lines:
+    ```
+    disqus:
+      shortname: <shortname>
+    ```  
+
+6. Confirm that you have the following at the end of `_layouts/post.html`:
+    ```html
+    {% raw %}{% if site.disqus.shortname %}
+        {% include disqus_comments.html %}
+    {% endif %}{% endraw %}
+    ```
+
+7. Add `comments: true` to the front matter of posts you wish to include
+  comments on, like this:
+    ```
+    ---   
+    layout: post
+    comments: true
+    title:  "Welcome to Jekyll!"
+    date:   2017-10-02 05:28:42 -0500
+    categories: jekyll update
+    ---
+    ```
+<br>
+That's it, now if you serve your site you should see the comments section on
+  any post that you added the `comments: true` tag to:  
+
+![disqus_comments]({{ site.url }}/images/disqus_comments.png)
+
+## Conclusions
+So we've managed to build a free, fully functional blog page from scratch using
+  Jekyll and Ruby. We were able to change the theme by mixing and matching
+  the necessary files from the mimina and jekyll-theme-slate themes. Also, we
+  enabled comments on our blog posts using Disqus. Not bad (for a first post)!
+
+Don't forget to add, commit, and push your files to github so that the site will
+  be available over the internet for the world to see! If you have any questions
+  feel free to leave a comment. Cheers!
+
+~Taylor
