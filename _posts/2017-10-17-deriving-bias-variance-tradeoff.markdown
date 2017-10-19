@@ -19,53 +19,53 @@ In this post, I'll be walking through the derivation of the *bias-variance trade
   in the flavor of ISLR for convenience and consistency in my notes. Let's start
   with MSE:  
 
-$$\mathbb{E}[(y_0 - \hat{y}_0)^2] = \mathbb{E}[y_0^2 - 2y_0\hat{y}_0 + \hat{y}_0^2]$$  
+$$\mathbb{E}[(y_0 - \widehat{y}_0)^2] = \mathbb{E}[y_0^2 - 2y_0\widehat{y}_0 + \widehat{y}_0^2]$$  
 
-$$= \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\hat{y}_0] + \mathbb{E}[\hat{y}_0^2]$$  
+$$= \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\widehat{y}_0] + \mathbb{E}[\widehat{y}_0^2]$$  
 
 Apply this lemma \\( \mathbb{E}[x] = \mathbb{E}[(x - \mathbb{E}[x])^2] + \mathbb{E}[x]^2 \\)
   to the first and third terms to get:  
 
-$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\hat{y}_0]
-+ \mathbb{E}[(\hat{y}_0 - \mathbb{E}[\hat{y}_0])^2] + \mathbb{E}[\hat{y}_0]^2$$  
+$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\widehat{y}_0]
++ \mathbb{E}[(\widehat{y}_0 - \mathbb{E}[\widehat{y}_0])^2] + \mathbb{E}[\widehat{y}_0]^2$$  
 
-Use the fact that \\( \mathbb{E}[\hat{y}_0] = \hat{f}(x_0) \\) to obtain:  
+Use the fact that \\( \mathbb{E}[\widehat{y}_0] = \widehat{f}(x_0) \\) to obtain:  
 
-$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0]\hat{f}(x_0)
-+ \mathbb{E}[(\hat{y}_0 - \hat{f}(x_0))^2] + \hat{f}(x_0)^2$$  
+$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0]\widehat{f}(x_0)
++ \mathbb{E}[(\widehat{y}_0 - \widehat{f}(x_0))^2] + \widehat{f}(x_0)^2$$  
 
 Rearranging this equation we get:  
 
-$$= \mathbb{E}(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0]\hat{f}(x_0)
-+ \hat{f}(x_0)^2 + \mathbb{E}[(\hat{y} - \hat{f}(x_0))^2]$$  
+$$= \mathbb{E}(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0]\widehat{f}(x_0)
++ \widehat{f}(x_0)^2 + \mathbb{E}[(\widehat{y} - \widehat{f}(x_0))^2]$$  
 
 Which can be further factorized to:  
 
-$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + (\mathbb{E}[y_0] - \hat{f}(x_0))^2
-+ \mathbb{E}[(\hat{y}_0 - \hat{f}(x_0))^2]$$  
+$$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + (\mathbb{E}[y_0] - \widehat{f}(x_0))^2
++ \mathbb{E}[(\widehat{y}_0 - \widehat{f}(x_0))^2]$$  
 
-Because \\( \hat{y}_0 - \hat{f}(x_0) = \epsilon \\), we can rewrite the
+Because \\( \widehat{y}_0 - \widehat{f}(x_0) = \epsilon \\), we can rewrite the
   third term:  
 
 $$= \color{blue}{\mathbb{E}[(y_0 - \mathbb{E}[y_0])^2} + \color{green}{(\mathbb{E}[y_0]
-    - \hat{f}(x_0))^2} + \color{red}{\mathbb{E}[\epsilon^2]}$$  
+    - \widehat{f}(x_0))^2} + \color{red}{\mathbb{E}[\epsilon^2]}$$  
 
-Also, since \\( \hat{y}_0 = \hat{f}(x_0) + \epsilon \\) and
+Also, since \\( \widehat{y}_0 = \widehat{f}(x_0) + \epsilon \\) and
   \\( \mathbb{E}[\epsilon] = 0 \\), this is exactly the same as:  
 
-$$\mathbb{E}[(y_0 - \hat{f}(x_0))^2]= \color{blue}{Var(\hat{f}(x_0))}
-+ \color{green}{[Bias(\hat{f}(x_0))]^2} + \color{red}{Var(\epsilon)}$$  
+$$\mathbb{E}[(y_0 - \widehat{f}(x_0))^2]= \color{blue}{Var(\widehat{f}(x_0))}
++ \color{green}{[Bias(\widehat{f}(x_0))]^2} + \color{red}{Var(\epsilon)}$$  
 
 In order to minimize the expected test error, we need to select a statistical learning
   method that simultaneously achieves *low variance* and *low bias*. Since variance
   and squared bias are nonnegative, expected test MSE can never lie below
   \\( Var(\epsilon) \\).  
 
-*Variance* refers to the amount by which \\( \hat{f} \\) would change if we
+*Variance* refers to the amount by which \\( \widehat{f} \\) would change if we
   estimated it using a different training set. Ideally, the estimate for \\( f \\)
   should not vary much between training sets, but if a method has high variance,
   then small changes in the training data can result in large changes of
-  \\( \hat{f} \\). In general, more flexible models have higher variance.  
+  \\( \widehat{f} \\). In general, more flexible models have higher variance.  
 
 *Bias* refers to the error that is introduced by approximating a real-life problem,
   which may be extremely complicated, by a much simpler model. In general, more flexible

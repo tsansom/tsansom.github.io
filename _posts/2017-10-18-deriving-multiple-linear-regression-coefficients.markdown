@@ -42,27 +42,27 @@ as the average effect on $Y$ of a one unit increase in $X_j$ holding all
 other predictors fixed.  
 
 Since the actual regression coefficients $\beta_0, \beta_1, ..., \beta_p$
-are unknown, they must be estimated with $\hat{\beta}_0,
-\hat{\beta}_1, ..., \hat{\beta}_p$. Then we can make predictions
+are unknown, they must be estimated with $\widehat{\beta}_0,
+\widehat{\beta}_1, ..., \widehat{\beta}_p$. Then we can make predictions
 using the formula:  
 
-$$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1x_1 +
-\hat{\beta}_2x_2 + ... + \hat{\beta}_px_p$$  
+$$\widehat{y} = \widehat{\beta}_0 + \widehat{\beta}_1x_1 +
+\widehat{\beta}_2x_2 + ... + \widehat{\beta}_px_p$$  
 
 The parameters are estimated using the same *least squares* approach
-as in simple linear regression. We choose $\hat{\beta}_0,
-\hat{\beta}_1, ..., \hat{\beta}_p$ to minimize the sum of squared
+as in simple linear regression. We choose $\widehat{\beta}_0,
+\widehat{\beta}_1, ..., \widehat{\beta}_p$ to minimize the sum of squared
 residuals:  
 
-$$RSS = \sum_{i=1}^n(y_i - \hat{y}_i)^2$$  
+$$RSS = \sum_{i=1}^n(y_i - \widehat{y}_i)^2$$  
 
-$$= \sum_{i=1}^n(y_i - \hat{\beta}_0 - \hat{\beta}_1x_{i1} -
-\hat{\beta}_2x_{i2} - ... - \hat{\beta}_px_{ip})^2$$  
+$$= \sum_{i=1}^n(y_i - \widehat{\beta}_0 - \widehat{\beta}_1x_{i1} -
+\widehat{\beta}_2x_{i2} - ... - \widehat{\beta}_px_{ip})^2$$  
 
 or equivalently  
 
-$$= \sum_{i=1}^n\biggr(y_i - (\hat{\beta}_0 +
-\sum_{j=1}^p\hat{\beta}_jX_{ij})\biggr)^2$$  
+$$= \sum_{i=1}^n\biggr(y_i - (\widehat{\beta}_0 +
+\sum_{j=1}^p\widehat{\beta}_jX_{ij})\biggr)^2$$  
 
 ## Deriving the Multiple Linear Regression Coefficients  
 Because the multiple regression coefficient estimates take on a somewhat
@@ -85,11 +85,11 @@ y_2\\
 $$  
 
 $$
-\hat{\beta} = \begin{bmatrix}
-\hat{\beta_0}\\
-\hat{\beta_1}\\
+\widehat{\beta} = \begin{bmatrix}
+\widehat{\beta_0}\\
+\widehat{\beta_1}\\
 \vdots\\
-\hat{\beta_p}
+\widehat{\beta_p}
 \end{bmatrix}
 \qquad\text{,}\qquad
 \epsilon = \begin{bmatrix}
@@ -108,46 +108,46 @@ $$\textbf{y} = \textbf{X}\beta + \epsilon$$
 and the RSS as:  
 
 $$RSS = \sum_{i=1}^n\epsilon^2 = \sum_{i=1}^n(\textbf{y} -
-\hat{\beta}\textbf{X})^2$$  
+\widehat{\beta}\textbf{X})^2$$  
 
 which in linear algebra is equivalent to:  
 
 $$RSS = \epsilon^t\epsilon = (\textbf{y} -
-\hat{\beta}\textbf{X})^t(\textbf{y} - \hat{\beta}\textbf{X})$$  
+\widehat{\beta}\textbf{X})^t(\textbf{y} - \widehat{\beta}\textbf{X})$$  
 
-$$= (\textbf{y}^t - \hat{\beta}^t\textbf{X}^t)(\textbf{y} -
-\hat{\beta}\textbf{X})$$  
+$$= (\textbf{y}^t - \widehat{\beta}^t\textbf{X}^t)(\textbf{y} -
+\widehat{\beta}\textbf{X})$$  
 
-$$= \textbf{y}^t\textbf{y} - \hat{\beta}^t\textbf{X}^ty -
-\textbf{y}^t\textbf{X}\hat{\beta} +
-\hat{\beta}^t\textbf{X}^t\textbf{X}\hat{\beta}$$  
+$$= \textbf{y}^t\textbf{y} - \widehat{\beta}^t\textbf{X}^ty -
+\textbf{y}^t\textbf{X}\widehat{\beta} +
+\widehat{\beta}^t\textbf{X}^t\textbf{X}\widehat{\beta}$$  
 
 and because the transpose of a $1 \times 1$ matrix is the same term,
-e.g. $\hat{\beta}^t\textbf{X}^t\textbf{y} =
-(\hat{\beta}^t\textbf{X}^t\textbf{y})^t =
-\textbf{y}^t\textbf{X}\hat{\beta}$ we are left with:  
+e.g. $\widehat{\beta}^t\textbf{X}^t\textbf{y} =
+(\widehat{\beta}^t\textbf{X}^t\textbf{y})^t =
+\textbf{y}^t\textbf{X}\widehat{\beta}$ we are left with:  
 
 $$RSS = \textbf{y}^t\textbf{y} -
-2\hat{\beta}^t\textbf{X}^t\textbf{y} +
-\hat{\beta}^t\textbf{X}^t\textbf{X}\hat{\beta}$$  
+2\widehat{\beta}^t\textbf{X}^t\textbf{y} +
+\widehat{\beta}^t\textbf{X}^t\textbf{X}\widehat{\beta}$$  
 
 As with simple linear regression we want to choose the coefficients such
-that $\frac{\partial{RSS}}{\partial\hat{\beta}} = 0$. *Note: there is
+that $\frac{\partial{RSS}}{\partial\widehat{\beta}} = 0$. *Note: there is
 only one equation here unlike the simple linear regression case since
-$\hat{\beta}_0$ is the first value of the $\hat{\beta}$ matrix.*
+$\widehat{\beta}_0$ is the first value of the $\widehat{\beta}$ matrix.*
 Mathematically, this becomes:  
 
-$$\frac{\partial{RSS}}{\partial\hat{\beta}} =
--2\textbf{X}^t\textbf{y} + 2\textbf{X}^t\textbf{X}\hat{\beta} = 0$$  
+$$\frac{\partial{RSS}}{\partial\widehat{\beta}} =
+-2\textbf{X}^t\textbf{y} + 2\textbf{X}^t\textbf{X}\widehat{\beta} = 0$$  
 
 Dividing by 2 and rearranging, we get:  
 
-$$\textbf{X}^t\textbf{X}\hat{\beta} = \textbf{X}^t\textbf{y}$$  
+$$\textbf{X}^t\textbf{X}\widehat{\beta} = \textbf{X}^t\textbf{y}$$  
 
 Now, multiplying both sides by the inverse of $\textbf{X}^t\textbf{X}$
-we get the final form of $\hat{\beta}$ as:  
+we get the final form of $\widehat{\beta}$ as:  
 
-$$\boxed{\hat{\beta} =
+$$\boxed{\widehat{\beta} =
 (\textbf{X}^t\textbf{X})^{-1}\textbf{X}^t\textbf{y}}$$  
 
 That's it, let me know if you have any questions or problems by leaving
