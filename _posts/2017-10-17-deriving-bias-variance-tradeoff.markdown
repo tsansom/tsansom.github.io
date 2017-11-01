@@ -23,7 +23,7 @@ $$\mathbb{E}[(y_0 - \widehat{y}_0)^2] = \mathbb{E}[y_0^2 - 2y_0\widehat{y}_0 + \
 
 $$= \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\widehat{y}_0] + \mathbb{E}[\widehat{y}_0^2]$$  
 
-Apply this lemma \\( \mathbb{E}[x] = \mathbb{E}[(x - \mathbb{E}[x])^2] + \mathbb{E}[x]^2 \\)
+Apply this lemma \\( \mathbb{E}[x^2] = \mathbb{E}[(x - \mathbb{E}[x])^2] + \mathbb{E}[x]^2 \\)
   to the first and third terms to get:  
 
 $$= \mathbb{E}[(y_0 - \mathbb{E}[y_0])^2] + \mathbb{E}[y_0]^2 - 2\mathbb{E}[y_0\widehat{y}_0]
