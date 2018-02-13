@@ -75,7 +75,7 @@ Changes made to any of the files in the project folder will be automatically
 #### Personalizing the Basics
 To add your personal information, blog title, url, etc., open the file
   **_config.yml** and replace the existing information there. You will have to
-  restart the server after making changes to _config.yml.
+  restart the server after making changes to \_config.yml.
 
 #### Getting the Blog on Github
 To make this blog live, we will first need to create the repository on
@@ -102,10 +102,10 @@ $ git push
 
 After a few seconds, the site should be live at `https://<username>.github.io`.
   You will see the same Jekyll template as we saw earlier (unless you changed
-  some fields in _config.yml).
+  some fields in \_config.yml).
 
 Congratulations, you now have a fully operational blog. To make your first post,
-  simply edit the lone markdown file in the folder _posts or add another
+  simply edit the lone markdown file in the folder \_posts or add another
   markdown file with the title `YYYY-MM-DD-name-of-post.markdown`. You will
   need to add the yaml front matter at the top:
 ```markdown
@@ -223,12 +223,12 @@ Because Jekyll sites do not come with a database, there is no way to enable
 
 1. Sign up and register your site with [Disqus](https://disqus.com).
     - This will give you a *short name* which we will use in a moment
-2. Make a new directory called _includes
+2. Make a new directory called \_includes
     ```bash
     $ mkdir _includes
     ```  
 
-3. Create a file in the _includes folder called `disqus_comments.html` and add
+3. Create a file in the \_includes folder called `disqus_comments.html` and add
   the following:  
 
     ```html
