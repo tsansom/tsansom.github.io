@@ -1,13 +1,11 @@
 ---
 layout: post
 comments: true
-title: "Clustering Neighborhood Change in Austin - Project Proposal"
+title: "Clustering Neighborhood Change in Austin"
+subtitle: "Part 1 - Project Proposal"
 data: 2018-02-02 08:01:48 -0600
 categories: austin clustering census capstone project proposal python
 ---
-
-# Clustering Neighborhood Change in Austin
-## Project Proposal
 
 ### The Problem:
 Austin is my home, I love it here, and I plan on being here for as long as possible. The city is diverse, open-minded, exciting, entertaining, and beautiful. There are countless music venues, locally owned shops and restaurants, parks, protected green spaces, and secret swimming holes. But Austin is changing, and FAST! For the past decade, Austin has consistently been at or near the top of the fastest growing large cities in the United States. While this population influx is a boon for the city in general, many residents have been or will be unwillingly displaced from their long-time homes due to increased cost of living associated with higher home prices and subsequent hike in real estate taxes.
