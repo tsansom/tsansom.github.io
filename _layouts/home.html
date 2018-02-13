@@ -15,7 +15,10 @@ layout: default
         <a class="post-link" href="{{ post.url | relative_url }}">
              <h2 class="post-title">{{ post.title | escape }}</h2>
              <h4 class="post-subtitle">{{ post.subtitle }}</h4></a>
-             <p class="post-meta"><em>Posted {{ post.date | date: date_format }}</em></p>
+             <!-- <p class="post-summary">{{ post.summary }}</p> -->
+             <p class="post-excerpt">{{ post.content | strip_html | truncatewords: 60}}
+             <a class="read-more" href="{{ post.url | relative_url }}">[Read More]</a></p>
+             <p id="post_meta">Posted {{ post.date | date: date_format }}</p>
 
       <hr>
     {% endfor %}
