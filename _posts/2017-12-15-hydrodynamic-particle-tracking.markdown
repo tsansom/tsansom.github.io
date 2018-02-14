@@ -4,7 +4,7 @@ comments: true
 title: "Model-Level Hydrodynamic Particle Tracking"
 subtitle: "Supporting oyster reef restoration projects in the Trinity-San Jacinto and Mission-Aransas Estuaries"
 data: 2017-12-15 09:48:48 -0600
-categories: particle-tracking TxBLEND
+categories: particle_tracking
 ---
 
 All code for this project is located in the project repository [HERE](https://github.com/tsansom/particle_tracking)

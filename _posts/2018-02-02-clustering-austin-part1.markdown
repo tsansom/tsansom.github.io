@@ -4,7 +4,7 @@ comments: true
 title: "Clustering Neighborhood Change in Austin"
 subtitle: "Part 1 - Project Proposal"
 data: 2018-02-02 08:01:48 -0600
-categories: austin clustering census capstone project proposal python
+categories: capstone_1
 ---
 
 ## The Problem:

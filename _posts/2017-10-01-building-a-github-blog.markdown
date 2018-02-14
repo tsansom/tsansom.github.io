@@ -3,7 +3,7 @@ layout: post
 comments: true
 title:  "Building a Github Blog with Jekyll and Ruby"
 date:   2017-10-01 05:49:27 -0500
-categories: github blog jekyll theme comments
+categories: jekyll_blog
 ---
 
 In this three-part tutorial I'll walk you through how to build a Github blog

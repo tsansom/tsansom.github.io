@@ -4,7 +4,7 @@ comments: true
 title: "Clustering Neighborhood Change in Austin"
 subtitle: "Part 2 - Data Wrangling"
 data: 2018-02-13 05:22:48 -0600
-categories: austin clustering census capstone project python
+categories: capstone_1
 ---
 
 The code for this post is located in three notebooks in the project's repository:
