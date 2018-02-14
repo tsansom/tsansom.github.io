@@ -7,7 +7,7 @@ data: 2018-02-14 04:10:27 -0600
 categories: austin clustering census capstone project python
 ---
 
-The code for this EDA is located in the project repository in the notebook [Exploratory Data Analysis](__insert link__)
+The code for this EDA is located in the project repository in the notebook [Exploratory Data Analysis](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/4%20-%20Exploratory%20Data%20Analysis.ipynb).
 
 ## Data Preparation Summary
 I'll start by doing a quick summary of the steps taken for data preparation thus far.
