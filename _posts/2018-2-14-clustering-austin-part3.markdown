@@ -99,6 +99,14 @@ There are a couple of troubling trends here that highlight the growing price ine
 Second, most neighborhoods are becoming less diverse with the percentage white population changing on average +5.8% with a maximum change of +55.5%! Think about that for a second... over half of a neighborhoods minority population being replaced by only white residents in a span of 16 years. Luckily for the displaced populations, rent has remained relatively stable and affordable, although most would probably prefer to own as opposed to rent.
 
 ### Neighborhood Change Map
-To get a grasp of the spatial extent of neighborhood change in Austin, I've created an interactive data viewer with Bokeh (which I'll describe in a different post) that captures some different aspects of the issues described throughout this post. There is a separate tab for each feature. Red denotes positive change while blue denotes negative change. Color intensity represents the magnitude of change. The actual value of change can be seen by moving the mouse over each neighborhood.
+To get a grasp of the spatial extent of neighborhood change in Austin, I've created an interactive data viewer with Bokeh (which I'll describe in a different post) that captures some different aspects of the issues described throughout this post. There is a separate tab for each feature. Green denotes positive change while red denotes negative change. Color intensity represents the magnitude of change. The actual value of change can be seen by hovering the mouse over each neighborhood.
 
-{% include change_viewer.html %}
+<figure>{% include change_viewer.html %}</figure>  
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+ I won't get into the neighborhood-by-neighborhood details here, as there is just too much information to parse. I will note a few things that stood out to me when using this data viewer.
+
+* The neighborhoods that saw that largest decrease in household income are also the neighborhoods with the highest drop in home values.
+* Education attained increased the most just east of Downtown Austin, which has been a hotbed for gentrification in the past decade.
+* Minority populations are being displaced out of downtown to the surrounding area (mostly North and West).
+* The neighborhoods East of Downtown Austin have changed the most between 2000 and 2016 in terms of income, home value, and racial demographics.
