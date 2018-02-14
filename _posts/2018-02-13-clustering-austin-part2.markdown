@@ -9,9 +9,9 @@ categories: austin clustering census capstone project python
 
 The code for this post is located in three notebooks in the project's repository:
 
-1 [Data Preprocessing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/1%20-%20Data%20Preprocessing.ipynb)  
-2 [Data Cleansing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/2%20-%20Data%20Cleansing.ipynb)  
-3 [Census Tract Relationships](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/3a%20-%20Create%20Maps%20-%20Census%20Tract%20Relationships.ipynb)  
+1 - [Data Preprocessing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/1%20-%20Data%20Preprocessing.ipynb)  
+2 - [Data Cleansing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/2%20-%20Data%20Cleansing.ipynb)  
+3 - [Census Tract Relationships](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/3%20-%20Create%20Maps.ipynb)  
 
 ## Data Sources:
 The United States Census Bureau (USCB) provides easy access to all census related datasets through their [American FactFinder](https://factfinder.census.gov/) portal. They offer community summaries, guided data retrieval, and advanced searching capabilities. For my purposes, the advanced search was used to identify and acquire the necessary datasets at the census tract level. For this study I acquired datasets which contained household income, home value, rental price, education attained, racial makeup, and employment rate for the years 2000, and 2009-2016. The geography will be limited to the metropolitan statistical area (MSA) for Austin which includes Bastrop, Caldwell, Hays, Travis, and Williamson Counties.

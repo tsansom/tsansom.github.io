@@ -7,6 +7,8 @@ data: 2017-12-15 09:48:48 -0600
 categories: particle-tracking TxBLEND
 ---
 
+All code for this project is located in the project repository [HERE](https://github.com/tsansom/particle_tracking)
+
 ## Introduction
 To support oyster reef restoration efforts and other potential projects (like oil spill response), I developed model-level particle tracking functionality for TxBLEND, a two-dimensional hydrodynamic and salinity transport model used by the Texas Water Development Board (TWDB) to simulate water circulation and salinity patterns in Texas estuaries. TxBLEND is a vertically-averaged, finite-element model which employs and unstructured, triangular element grid with linear basis functions. The model is designed specifically for Texas estuaries, which are generally very shallow and wide bodies of water.
 
