@@ -4,24 +4,30 @@ comments: true
 title: "Clustering Neighborhood Change in Austin"
 subtitle: "Part 2 - Data Wrangling"
 data: 2018-02-13 05:22:48 -0600
-categories: austin clustering census capstone project proposal python
+categories: austin clustering census capstone project python
 ---
 
-## The Source:
+The code for this post is located in three notebooks in the project's repository:
+
+1 [Data Preprocessing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/1%20-%20Data%20Preprocessing.ipynb)  
+2 [Data Cleansing](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/2%20-%20Data%20Cleansing.ipynb)  
+3 [Census Tract Relationships](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/3a%20-%20Create%20Maps%20-%20Census%20Tract%20Relationships.ipynb)  
+
+## Data Sources:
 The United States Census Bureau (USCB) provides easy access to all census related datasets through their [American FactFinder](https://factfinder.census.gov/) portal. They offer community summaries, guided data retrieval, and advanced searching capabilities. For my purposes, the advanced search was used to identify and acquire the necessary datasets at the census tract level. For this study I acquired datasets which contained household income, home value, rental price, education attained, racial makeup, and employment rate for the years 2000, and 2009-2016. The geography will be limited to the metropolitan statistical area (MSA) for Austin which includes Bastrop, Caldwell, Hays, Travis, and Williamson Counties.
 
 Census tracts are designed to be roughly equivalent to neighborhoods in that they generally have a population between 2,500 and 8,000 people. Geographic reference maps (shapefiles) of the 2000 and 2010 census tracts were obtained from the USCB’s [Maps & Data](https://www.census.gov/geo/maps-data/maps/reference.html) site. While census tracts are considered semi-permanent, they do change over time. To relate previous census tracts configurations to the most current census tracts, [relationship files](https://www.census.gov/geo/maps-data/data/relationship.html) must be utilized.
 
 Finally, to accurately compare income and cost of living values over time, the monetary features were adjusted to 2016 prices. For this, I used the Bureau of Labor Statistics’ (BLS) [Consumer Price Index Research Series](https://www.census.gov/topics/income-poverty/income/guidance/current-vs-constant-dollars.html) (CPI_U_RS).
 
-## The Munging:
+## Data Munging:
 ### Dropping and Renaming Columns
 The raw census data from USCB contained many fields that weren’t needed for the clustering analysis, so they were dropped at the reading stage. These fields typically contained data that were grouped at different demographic levels other than for the entire population (e.g. income by sex, education by race, unemployment by age, etc.) as well as margins of error on estimates. Additionally, the column headings were in a descriptive form and were changed to a more succinct, compact version. For example, in the household income table, the field Estimate; Total: - \$10,000 to \$14,999 was changed to [10k-15k) where the interval is inclusive on the low end and exclusive on the high end.
 
 ### Relating Census Tracts
 Directly after reading the data, the relationship files were used to convert census tracts from the 2000 decennial census (years 2000 and 2009) to the 2010 decennial census (years 2010-2016). This was done using a population percentage change from census tracts that either merged multiple tracts into single tract or split a single tract into multiple tracts between 2000 and 2010. I only considered census tract changes which had a >5% change in population.
 
-![merged_split_tracts]({{ site.url }}/images/merged_split_tracts.png)
+![merged_split_tracts]({{ site.url }}/images/cluster_proj/merged_split_tracts.png)
 
 The figure above shows only the census tracts that changed more than 5% in total population between the decennial censuses. The 2000 census contained 256 tracts while the 2010 census contained 350.
 
@@ -43,7 +49,7 @@ The employed feature is the percentage of the eligible workforce that was employ
 ### Adjusting for Inflation
 The CPI_U_RS data was used to calculate inflation factors for each of the years in relation to 2016. The monetary indexes were then multiplied by this inflation factor so they could be more reliably compared.
 
-## The Cleaning:
+## Data Cleansing:
 To ensure a fair and robust clustering analysis, the data was checked for missing values (in this case zeros). A total of 10 tracts were found to have missing data. Upon investigating the census tracts with missing values using various mapping tools, 3 were found to have missing values that could be imputed while the remaining 7 tracts could not and were excluded.
 
 ### Imputing Rent Index
