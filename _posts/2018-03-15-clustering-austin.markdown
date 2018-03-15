@@ -9,7 +9,8 @@ categories: capstone_1
 
 [Part 1 - Project Proposal](#part-1---project-proposal)  
 [Part 2 - Data Wrangling](#part-2---data-wrangling)  
-[Part 3 - Exploratory Data Analysis](#part-3---exploratory-data-analysis)
+[Part 3 - Exploratory Data Analysis](#part-3---exploratory-data-analysis)  
+[Part 4 - Choosing a Clustering Algorithm](#part-4---choosing-a-clustering-algorithm)
 
 ---
 
@@ -230,3 +231,47 @@ To get a grasp of the spatial extent of neighborhood change in Austin, I've crea
 * Education attained increased the most just east of Downtown Austin, which has been a hotbed for gentrification in the past decade.
 * Minority populations are being displaced out of downtown to the surrounding area (mostly North and West).
 * The neighborhoods East of Downtown Austin have changed the most between 2000 and 2016 in terms of income, home value, and racial demographics.
+
+---
+
+# Part 4 - Choosing a Clustering Algorithm
+
+The code for this section is located in the project repository in the notebook [Choosing Clustering Algorithm](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/6%20-%20Choosing%20Clustering%20Algorithm.ipynb)
+
+## Considerations
+For this project I tested 6 clustering algorithms against my cleaned dataset. Below is a brief description of each.
+
+### K-Means
+K-means is typically the go-to off-the-shelf model for clustering applications. It's fast, easy to understand, and available in pretty much every statistical learning tool. The basic steps for k-means clustering are:
+1. Choose number of clusters (k)
+2. Initialize the k cluster centroids *randomly*
+  * sklearn initializes the centroids using the k-means++ careful seeding technique (more information [here](http://ilpubs.stanford.edu:8090/778/1/2006-13.pdf)) which reduces complexity and speeds up convergence
+3. Assign each data point to the closest centroid
+  * using Euclidean distance
+4. Calculate the cluster centroid based on the mean of all observations assigned to each centroid
+5. Repeat steps 3 and 4 until the centroids don't change
+  * or until the change is less than some stopping threshold
+
+A drawback of k-means is that the user must choose the number of clusters before running the model even if the ideal number of clusters is not known. One method to validate the number of clusters is referred to as the "elbow method". Essentially, the user can run k-means on the dataset with a range of values for k, calculate the within clusters sum of squared errors (wcss) for each cluster, and plot the number of clusters vs the wcss. In all cases the wcss will decrease as the number of clusters increases, due to increased flexibility in the model. In cases where the clusters are well separated, there will be a *kink* in the plot that resembles an elbow. At this point, the error stops decreasing rapidly, which indicates the optimal number of clusters for that dataset. In practice however, this "elbow" is usually hard to identify for clusters that are more ambiguous.
+
+### Hierarchical Agglomerative Clustering
+The fundamental process for agglomerative clustering is:
+1. Each observation starts in its own cluster
+2. Compute the between cluster distance based on the linkage criterion
+  * ward linkage minimizes the variance of the clusters being merged
+  * average linkage uses the average distances of each observations in the two clusters
+  * complete linkage uses the maximum distance between observations of the two clusters
+3. Merge the two clusters that have the smallest calculated distance
+4. Repeat steps 2 and 3 until only a single cluster remains
+
+The results from agglomerative clustering can then be visualized in the form of a dendrogram, which looks like a hierarchical tree with the distances between merged clusters on the y-axis.
+
+Similar to k-means clustering, the number of clusters must be specified. In cases where the clusters are well separated, there will be a distinct cutoff point in the dendrogram (a horizontal line) which dissects the maximum distance between merged clusters, where the number of clusters is the number of vertical lines the horizontal line crosses. Also similar to k-means, this cutoff point is often ambiguous and hard to identify.
+
+### Affinity Propagation
+Affinity propagation is a newer clustering algorithm that avoids the problem of having to choose the number of clusters by identifying exemplars among observations. The algorithm simultaneously considers all observations as potential exemplars and exchanges "messages" between observations until a good set of exemplars and clusters emerge. Essentially the algorithm lets the observations "vote" on their preferred exemplar. Once the optimal examplars are found, a process similar to k-means is utilized to form clusters by assigning each observation to its closest exemplar.
+
+Tuning the affinity propagation model is done using the *preference* and *damping factor* hyperparameters, although this process is not very intuitive. Preference controls how many exemplars are used while the damping factor is tuned to avoid numerical oscillations when updating messages.
+
+### Spectral Clustering
+Spectral clustering makes use of the eigenvalues of the similarity matrix of the data to perform
