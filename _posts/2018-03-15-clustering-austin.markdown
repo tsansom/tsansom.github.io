@@ -10,11 +10,13 @@ categories: capstone_1
 [Part 1 - Project Proposal](#part-1---project-proposal)  
 [Part 2 - Data Wrangling](#part-2---data-wrangling)  
 [Part 3 - Exploratory Data Analysis](#part-3---exploratory-data-analysis)  
-[Part 4 - Choosing a Clustering Algorithm](#part-4---choosing-a-clustering-algorithm)
+[Part 4 - Choosing a Clustering Algorithm](#part-4---choosing-a-clustering-algorithm)  
+[Part 5 - Clustering Analysis](#part-5---clustering-analysis)
 
 ---
 
 # Part 1 - Project Proposal
+[Top](#)
 
 ## Problem:
 Austin is my home, I love it here, and I plan on being here for as long as possible. The city is diverse, open-minded, exciting, entertaining, and beautiful. There are countless music venues, locally owned shops and restaurants, parks, protected green spaces, and secret swimming holes. But Austin is changing, and FAST! For the past decade, Austin has consistently been at or near the top of the fastest growing large cities in the United States. While this population influx is a boon for the city in general, many residents have been or will be unwillingly displaced from their long-time homes due to increased cost of living associated with higher home prices and subsequent hike in real estate taxes.
@@ -51,6 +53,7 @@ The deliverables for this project will be code (Jupyter Notebooks), a write-up o
 ---
 
 # Part 2 - Data Wrangling
+[Top](#)
 
 The code for this section is located in three notebooks in the project's repository:
 
@@ -127,6 +130,7 @@ After the data wrangling process was complete, I was left with a clean dataset w
 ---
 
 # Part 3 - Exploratory Data Analysis
+[Top](#)
 
 The code for this EDA is located in the project repository in the notebook [Exploratory Data Analysis](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/4%20-%20Exploratory%20Data%20Analysis.ipynb).
 
@@ -235,11 +239,14 @@ To get a grasp of the spatial extent of neighborhood change in Austin, I've crea
 ---
 
 # Part 4 - Choosing a Clustering Algorithm
+[Top](#)
 
 The code for this section is located in the project repository in the notebook [Choosing Clustering Algorithm](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/6%20-%20Choosing%20Clustering%20Algorithm.ipynb)
 
 ## Considerations
-For this project I tested 6 clustering algorithms against my cleaned dataset. Below is a brief description of each.
+For this project I compared 4 clustering algorithms against my cleaned dataset. In addition to the 4 algorithms discussed below, I also tested the mean shift and DBSCAN algorithms but chose not to include them as they typically find high density clusters while treating low density areas as noise (*ie* they don't get assigned to a cluster). Each one of my observations is a neighborhood, so I want them all to be allocated.
+
+My goal for this study was to track a neighborhood's socioeconomic change over time, which were captured by how a neighborhood changes clusters over time. Because of this, I needed to have a sufficient number of clusters to insure that the movement is clear. If I chose just a small number of clusters, only large changes in a neighborhood's socioeconomics would be captured. Too many clusters would add too much complexity which would work against the goals of this analysis. Using these considerations, I chose to consider 5 to 10 clusters for each algorithm and score them by silhouette score (discussed later in this section).
 
 ### K-Means
 K-means is typically the go-to off-the-shelf model for clustering applications. It's fast, easy to understand, and available in pretty much every statistical learning tool. The basic steps for k-means clustering are:
@@ -269,9 +276,36 @@ The results from agglomerative clustering can then be visualized in the form of 
 Similar to k-means clustering, the number of clusters must be specified. In cases where the clusters are well separated, there will be a distinct cutoff point in the dendrogram (a horizontal line) which dissects the maximum distance between merged clusters, where the number of clusters is the number of vertical lines the horizontal line crosses. Also similar to k-means, this cutoff point is often ambiguous and hard to identify.
 
 ### Affinity Propagation
-Affinity propagation is a newer clustering algorithm that avoids the problem of having to choose the number of clusters by identifying exemplars among observations. The algorithm simultaneously considers all observations as potential exemplars and exchanges "messages" between observations until a good set of exemplars and clusters emerge. Essentially the algorithm lets the observations "vote" on their preferred exemplar. Once the optimal examplars are found, a process similar to k-means is utilized to form clusters by assigning each observation to its closest exemplar.
+Affinity propagation is a newer clustering algorithm that avoids the problem of having to choose the number of clusters by identifying exemplars among observations. The algorithm simultaneously considers all observations as potential exemplars and exchanges "messages" between observations until a good set of exemplars and clusters emerge. Essentially the algorithm lets the observations "vote" on their preferred exemplar. Once the optimal exemplars are found, a process similar to k-means is utilized to form clusters by assigning each observation to its closest exemplar.
 
 Tuning the affinity propagation model is done using the *preference* and *damping factor* hyperparameters, although this process is not very intuitive. Preference controls how many exemplars are used while the damping factor is tuned to avoid numerical oscillations when updating messages.
 
 ### Spectral Clustering
-Spectral clustering makes use of the eigenvalues of the similarity matrix of the data to perform
+Spectral clustering makes use of the eigenvalues of the similarity matrix of the observations to project the data into a lower-dimensional space where they are easily separable. After the dimensionality reduction, the lower-dimensional data can be clustered using an algorithm such as k-means.
+
+The number of clusters must be specified when using spectral cluster, just as in k-means. The most stable number of clusters is usually given by the largest difference between consecutive eigenvalues (minimizes the eigengap).
+
+### Scoring the Algorithms
+Silhouette analysis is a way to measure how similar an observation is to its own cluster as compared to other clusters. The in-cluster similarity is known as cohesion, while the out-of-cluster similarity is known as separation. High values of the silhouette score (close to +1) indicates that the observations in a cluster are much more similar to other observations in that cluster than they are to observations in other clusters.
+
+## Comparison
+For this comparison I chose to display only the two results with the highest silhouette score. For the full analysis of all algorithms on the full range of number of clusters, see the [source notebook](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/6%20-%20Choosing%20Clustering%20Algorithm.ipynb) in the project's repository.
+
+Below is the silhouette scores for all algorithms that were tested on this dataset.
+
+![silhouette comparison]({{ site.url }}/images/cluster_proj/silhouette_comparison.png)
+
+To visually compare the clustering, I used dimensionality reduction to reduce the data to two-dimensions using both principal component analysis (PCA) and t-distributed stochastic neighbor embedding (tSNE). For an interesting visual comparison of how these two dimensionality reduction techniques capture the variability in this dataset, see [this notebook](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/5%20-%20Visualizing%20Dimension%20Reductions.ipynb).
+
+![kmeans 6 clusters]({{ site.url }}/images/cluster_proj/kmeans_6_clusters.png)
+
+![spectral 5 clusters]({{ site.url }}/images/cluster_proj/spectral_5_clusters.png)
+
+From the plots above, the k-means clustering seems to produce reasonably more balanced cluster sizes than spectral clustering with less negative silhouette values. Also, k-means has a slightly higher silhouette score and is much easier to understand conceptually than spectral clustering. For these reasons, I chose to use **k-means clustering with 6 clusters** for the socioeconomic change analysis that follows.
+
+---
+
+# Part 5 - Clustering Analysis
+[Top](#)
+
+The code for this section is located in the project repository in the notebook [Clustering Analysis](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/7%20-%20Clustering%20Analysis.ipynb).
