@@ -309,3 +309,56 @@ From the plots above, the k-means clustering seems to produce reasonably more ba
 [Top](#)
 
 The code for this section is located in the project repository in the notebook [Clustering Analysis](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/7%20-%20Clustering%20Analysis.ipynb).
+
+In order to see how the neighborhoods move between clusters over the years, it's important that the clustering algorithm be consistent for the entire dataset. At first, I though about training the k-means algorithm on the first year and use that model to predict clusters for subsequent years. The problem with this technique was that not all the observations would be considered in the training phase of the model, meaning that the only real analysis that could be done was a comparison to year 2000. In the end, I decided to train the model on all the observations simultaneously, that way the model would consider each observation fairly. This is possible because I adjusted all the observations by inflation estimates to 2016 values.
+
+## Ordering of Clusters
+
+After performing the k-means clustering with 6 clusters, I needed a way to logically order the clusters that made sense for this analysis. In my mind, home value was the most important feature for identifying neighborhoods that were experiencing drastic socioeconomic changes, although similar arguments could be made to justify using any of the features. Neighborhoods in which home values increased substantially in the time frame of this dataset were potentially suffering from price inequality and gentrification. With this in mind, I ordered the clusters based on the median home value index, with 1 being the lowest median home value index and 6 being the highest.
+
+I did this by creating a mapping dictionary of the old cluster number to the new cluster number with the following code:
+
+```python
+clust_map = data.groupby('clusters')['Value Index'].median().rank().astype('int').to_dict()
+data['clusters'] = data['clusters'].map(clust_map)
+```
+
+What this code does is group by original cluster -> get median home value for each cluster -> rank them low to high -> cast as integers -> convert to dictionary -> map new cluster numbers to the dataframe.
+
+## Describing the Clusters
+
+The figure below shows violin plots for each of the features grouped by cluster number.
+
+![violins]({{ site.url }}/images/cluster_proj/violins.png)
+
+It's clear that logically ordering the clusters by median home value index helps to get a better intuition of the neighborhood socioeconomic information contained in each cluster. Education index and percent white follow the same ordering pattern as value index and would have yielded the same results. Income index, rent index, and percent employed had similar orderings but diverged for a few of the clusters.
+
+![observations per cluster]({{ site.url }}/images/cluster_proj/obs_per_cluster.png)
+
+Cluster 1 is the second largest group and contains the poorest neighborhoods, with home values, income, and education well below the 25th percentile. Cluster 2 displays similar characteristics to Cluster 1 except with a higher percentage of white population and the lowest employment rate. Cluster 3 contains the majority of observations (~39%), which is not surprising since the distribution of each feature for this cluster is centered squarely along the median in the violin plots. Cluster 4 has the highest rent and the second highest income, although the home values are only slightly above the median. Cluster 5 has higher home values than cluster 4 but lower rent and income. Cluster 6 is the smallest group and contains the most affluent neighborhoods in the Austin MSA. The variability of home values in cluster 6 is extremely large, with values ranging from \\$400,000 to \\$1.2 million. The same is true to a slightly lesser extent of income in this cluster.
+
+There are many interesting insights that can be gleaned from the violin plots. Looking at the education index, the variability decreases rapidly moving from cluster 1 to cluster 6. This is almost exactly opposite to the variability in home values and to a lesser extent income. My interpretation of this is that some people with a higher education don't ever break through their income ceiling, but to reach the upper echelon of affluence, you almost certainly need to have some college education (which coincides with an education index of 5). The higher the education attained, the better.
+
+## Cluster Movement Between Years
+
+Thus far this analysis has focused on neighborhood groups without regard to the year of the observation, but now I am going to transition into talking about specific neighborhoods and how they change over time. Specifically, I'll be investigating the neighborhoods that move rapidly between clusters from year to year. To facilitate this, I first need to aggregate the different years for each neighborhood (which, up until now, have been treated as distinct observations), and create a list of the cluster group that the neighborhood was in for each year. This is quite simple.
+
+```python
+geoid_clusters = data.groupby('geoid')['clusters'].apply(list).to_frame()
+```
+
+Next, I need to find the maximum change in each of the newly created cluster lists. The function below is applied to the lists to extract this information.
+
+```python
+def max_change(x):
+      change = np.max(x) - np.min(x)
+      if x.index(np.max(x)) < x.index(np.min(x)):
+            return change * -1
+      return change
+```
+
+The if statement above checks whether the largest cluster occurs before or after the smallest cluster. If the largest cluster occurs before the smallest cluster, then the neighborhood is *deteriorating* (meaning that home values and other features are getting worse), and the neighborhood is *improving* if the opposite is true. I use the terms deteriorating and improving loosely here, because everything comes at a cost to someone. The breakdown of the max change is displayed in the figure below.
+
+![max change]({{ site.url }}/images/cluster_proj/max_change.png)
+
+Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters.
