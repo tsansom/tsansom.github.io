@@ -11,7 +11,8 @@ categories: capstone_1
 [Part 2 - Data Wrangling](#part-2---data-wrangling)  
 [Part 3 - Exploratory Data Analysis](#part-3---exploratory-data-analysis)  
 [Part 4 - Choosing a Clustering Algorithm](#part-4---choosing-a-clustering-algorithm)  
-[Part 5 - Clustering Analysis](#part-5---clustering-analysis)
+[Part 5 - Clustering Analysis](#part-5---clustering-analysis)  
+[Part 6 - Closing Remarks](#part-6---closing-remarks)
 
 ---
 
@@ -339,6 +340,10 @@ Cluster 1 is the second largest group and contains the poorest neighborhoods, wi
 
 There are many interesting insights that can be gleaned from the violin plots. Looking at the education index, the variability decreases rapidly moving from cluster 1 to cluster 6. This is almost exactly opposite to the variability in home values and to a lesser extent income. My interpretation of this is that some people with a higher education don't ever break through their income ceiling, but to reach the upper echelon of affluence, you almost certainly need to have some college education (which coincides with an education index of 5). The higher the education attained, the better.
 
+*The interactive map below shows the clustering for each neighborhood by year. Hover over each to see more information.*
+
+<figure>{% include clusters_by_year.html %}</figure> 
+
 ## Cluster Movement Between Years
 
 Thus far this analysis has focused on neighborhood groups without regard to the year of the observation, but now I am going to transition into talking about specific neighborhoods and how they change over time. Specifically, I'll be investigating the neighborhoods that move rapidly between clusters from year to year. To facilitate this, I first need to aggregate the different years for each neighborhood (which, up until now, have been treated as distinct observations), and create a list of the cluster group that the neighborhood was in for each year. This is quite simple.
@@ -361,6 +366,33 @@ The if statement above checks whether the largest cluster occurs before or after
 
 ![max change]({{ site.url }}/images/cluster_proj/max_change.png)
 
-Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters, these are shown below.
+Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters, specifically the 7 that moved by +4 clusters. The maps showing the maximum cluster change are below.
 
-<img src="{{ site.url }}/images/cluster_proj/largest_max_change.png" height="600">
+![max change map]({{ site.url }}/images/cluster_proj/max_change_map.png)
+
+Neighborhoods filled red are areas that deteriorated during this projects time-frame, with color intensity indicating the degree of change. Neighborhoods filled green are areas that improved. Neighborhoods which did not change cluster are not filled (or filled with 'none' color).
+
+The 7 neighborhoods which experienced a max change of +4 clusters are directly adjacent to the Downtown Austin area, with 3 of them occurring east of downtown and the remaining 4 residing south of downtown. Below is the average of each of these 7 neighborhoods over the time-frame of this project.
+
+![max change +4]({{ site.url }}/images/cluster_proj/max_change_4_mean.png)
+
+These neighborhoods saw on average a 242% change in home values (and in turn property taxes), a 140% change in income, and a 139% change in rent. The education level increased from less than a high school degree to at least some college while the percentage employed stayed relatively stable. However, the most disheartening change, and the final point of this project is the change in percent white within this grouping. These neighborhoods lost on average **one third** of their minority ethnicities.
+
+The most extreme loss of ethnic diversity occurred in census tract 8.03 (geoid 48453000803), which went from 22.25% white to 77.74% white in the span of 16 years. That's a loss of 55.50% of the minority population! This neighborhood is bounded by Interstate 35 to the west, the metro rail to the east, Martin Luther King Jr. Blvd. to the north, and East 12th street to the west (see map below).
+
+![tract 8.03]({{ site.url }}/images/cluster_proj/tract_803.png)
+
+It's extremely common now to drive through this neighborhood and see visual signs of "New Austin" vs "Old Austin", as seen in the images below, which are all taken from census tract 8.03.
+
+![modern vs original 1]({{ site.url }}/images/cluster_proj/modern_vs_original.png)
+![modern vs original 2]({{ site.url }}/images/cluster_proj/modern_vs_original2.png)
+![modern vs original 3]({{ site.url }}/images/cluster_proj/modern_vs_original3.png)
+
+---
+
+# Part 6 - Closing Remarks
+[Top](#)
+
+The point of this project was not to argue for or against gentrification or urban development in general; both sides of the debate offer valid arguments. My ultimate goal was to empower the City of Austin with ample information to make responsible developmental decisions, while keeping the minority voice in mind.
+
+The diversity that Austin boasts about and strives for is present right now, but is dwindling and is in danger of permanent displacement. The ever-increasing price inequality in Austin (and the entire U.S. for that matter) disproportionately affects the minority population. Without proper care when planning urban development projects, these populations could be pushed to the outskirts, financially segregated and marginalized. This is not something that fits into Austin's "Vision for the Future".
