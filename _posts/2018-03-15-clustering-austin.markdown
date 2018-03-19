@@ -361,4 +361,6 @@ The if statement above checks whether the largest cluster occurs before or after
 
 ![max change]({{ site.url }}/images/cluster_proj/max_change.png)
 
-Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters.
+Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters, these are shown below.
+
+<img src="{{ site.url }}/images/cluster_proj/largest_max_change.png" height="600">
