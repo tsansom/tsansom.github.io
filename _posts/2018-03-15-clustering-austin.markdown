@@ -76,7 +76,8 @@ The raw census data from USCB contained many fields that weren’t needed for th
 ### Relating Census Tracts
 Directly after reading the data, the relationship files were used to convert census tracts from the 2000 decennial census (years 2000 and 2009) to the 2010 decennial census (years 2010-2016). This was done using a population percentage change from census tracts that either merged multiple tracts into single tract or split a single tract into multiple tracts between 2000 and 2010. I only considered census tract changes which had a >5% change in population.
 
-![merged_split_tracts]({{ site.url }}/images/cluster_proj/merged_split_tracts.png)
+<!-- ![merged_split_tracts]({{ site.url }}/images/cluster_proj/merged_split_tracts.png) -->
+<img src="{{ site.url }}/images/cluster_proj/merged_split_tracts.png" width="700px">
 
 The figure above shows only the census tracts that changed more than 5% in total population between the decennial censuses. The 2000 census contained 256 tracts while the 2010 census contained 350.
 
@@ -154,7 +155,8 @@ For this section, all observations will be investigated together, independent of
 ### Correlation Matrix
 I'll start by seeing how correlated each of the features is to each other.
 
-![correlation_matrix]({{ site.url }}/images/cluster_proj/corr_matrix.png)
+<!-- ![correlation_matrix]({{ site.url }}/images/cluster_proj/corr_matrix.png) -->
+<img src="{{ site.url }}/images/cluster_proj/corr_matrix.png" width="700px">
 
 From the above correlation matrix, we can see that all features have positive correlations between 0.27 and 0.75. Education attained shows high correlation with income and home value (0.71 and 0.74 respectively) which is not surprising since higher education typically leads to higher household income which in turn leads to the ability to purchase more expensive housing. Rent and income show similar correlation.
 
@@ -172,7 +174,8 @@ _ = pd.plotting.scatter_matrix(data[cols], figsize=(12, 12), alpha=0.1,
                                diagonal='kde', marker='.')
 ```
 
-![scatter_matrix]({{ site.url }}/images/cluster_proj/scatter_matrix.png)
+<!-- ![scatter_matrix]({{ site.url }}/images/cluster_proj/scatter_matrix.png) -->
+<img src="{{ site.url }}/images/cluster_proj/scatter_matrix.png" width="700px">
 
 Now we can start to see some of the intricate relationships between the features. Subplots with a large spread in scatter points have a weaker relationship than subplots with tight grouping of points. By using a very low alpha (transparency) value for each point, the darkest color appears where many points overlap. This dark section of each subplot is where the relationship between the features is the most common. For example, the scatter plot of rent versus home value has a very dark region in the lower left corner in which most of the points fall. Beyond that, the relationship gets weaker and point are more spread out, thus the color is lighter. Subplots with a less pronounced dark region represent features with a weak relationship which tend to have a greater spread in scatter points (as seen in the education vs percentage white subplot).
 
@@ -180,7 +183,8 @@ Now we can start to see some of the intricate relationships between the features
 In this section I'll pick a few of the most interesting feature relationships to explain in greater depth. For the comparisons I'll be using a combination of scatterplots, histograms, and kernel density estimation contours. Seaborn offers an information rich combination plot which is perfect for this sort of comparison (jointplot).
 
 #### Income vs Home Value
-![income_value]({{ site.url }}/images/cluster_proj/joint_income_value.png)
+<!-- ![income_value]({{ site.url }}/images/cluster_proj/joint_income_value.png) -->
+<img src="{{ site.url }}/images/cluster_proj/joint_income_value.png" width="700px">
 
 There is clearly a linear relationship between income and home value, which is not surprising. The lower bound of this linear relationship is very pronounced while the upper bound is more variable. Some outliers in this plot show relationships between income and home value that don't make much sense. For instance, in the lower left-hand corner there are a group of observations that fall outside the density contours that have the lowest income (<\\$20k) but comparatively high home values (\\$200k - \\$300k).
 
@@ -199,13 +203,15 @@ To understand this relationship I need to explain how the education index was ca
 
 So an education index of 6 means that the average education attained for a neighborhood would be a bachelor's degree. Now, we can move forward with the comparison.
 
-![education_income]({{ site.url }}/images/cluster_proj/joint_education_income.png)
+<!-- ![education_income]({{ site.url }}/images/cluster_proj/joint_education_income.png) -->
+<img src="{{ site.url }}/images/cluster_proj/joint_education_income.png" width="700px">
 
 While there is clearly a positive psuedo-linear relationship between education attained and income, there seems to be a breakpoint around an education index of 5 (which corresponds to associate's degree attainment). To the right of this breakpoint, income is much more variable although the potential maximum income is much higher in comparison to lower education attainment. As in the previous comparison of income to home value, the cluster of points at the bottom right of the plot (high education, low income) correspond to neighborhoods with large percentages of students.
 
 #### Home Value vs Percentage White
 
-![value_white]({{ site.url }}/images/cluster_proj/joint_value_white.png)
+<!-- ![value_white]({{ site.url }}/images/cluster_proj/joint_value_white.png) -->
+<img src="{{ site.url }}/images/cluster_proj/joint_value_white.png" width="700px">
 
 This plot alone tells a very profound socioeconomic story about Austin. While the city boasts about racial equality and affordability, they fail to tell you as these things are apparently mutually exclusive. For instance, the top 100 neighborhoods in terms of home value are nearly 90% white! I've personally driven through many of these neighborhoods and can attest to their monochromatic demographics.
 
@@ -218,7 +224,8 @@ changes_2000_2016 = data[data['year'] == '2016'][cols] \
 changes_2000_2016.describe()
 ```
 
-![neighborhood_change_describe]({{ site.url }}/images/cluster_proj/neighborhood_change_describe.png)
+<!-- ![neighborhood_change_describe]({{ site.url }}/images/cluster_proj/neighborhood_change_describe.png) -->
+<img src="{{ site.url }}/images/cluster_proj/neighborhood_change_describe.png" width="700px">
 
 There are a couple of troubling trends here that highlight the growing price inequality in Austin. First, household income is declining while home values are increasing. On average, household income per neighborhood has decreased by almost \\$5,000 while home values have increased by about \\$62,000.
 
@@ -294,13 +301,16 @@ For this comparison I chose to display only the two results with the highest sil
 
 Below is the silhouette scores for all algorithms that were tested on this dataset.
 
-![silhouette comparison]({{ site.url }}/images/cluster_proj/silhouette_comparison.png)
+<!-- ![silhouette comparison]({{ site.url }}/images/cluster_proj/silhouette_comparison.png) -->
+<img src="{{ site.url }}/images/cluster_proj/silhouette_comparison.png" width="700px">
 
 To visually compare the clustering, I used dimensionality reduction to reduce the data to two-dimensions using both principal component analysis (PCA) and t-distributed stochastic neighbor embedding (tSNE). For an interesting visual comparison of how these two dimensionality reduction techniques capture the variability in this dataset, see [this notebook](https://github.com/tsansom/Springboard-Data-Science/blob/master/capstone_projects/gentrification/notebooks/5%20-%20Visualizing%20Dimension%20Reductions.ipynb).
 
-![kmeans 6 clusters]({{ site.url }}/images/cluster_proj/kmeans_6_clusters.png)
+<!-- ![kmeans 6 clusters]({{ site.url }}/images/cluster_proj/kmeans_6_clusters.png) -->
+<img src="{{ site.url }}/images/cluster_proj/kmeans_6_clusters.png" width="700px">
 
-![spectral 5 clusters]({{ site.url }}/images/cluster_proj/spectral_5_clusters.png)
+<!-- ![spectral 5 clusters]({{ site.url }}/images/cluster_proj/spectral_5_clusters.png) -->
+<img src="{{ site.url }}/images/cluster_proj/spectral_5_clusters.png" width="700px">
 
 From the plots above, the k-means clustering seems to produce reasonably more balanced cluster sizes than spectral clustering with less negative silhouette values. Also, k-means has a slightly higher silhouette score and is much easier to understand conceptually than spectral clustering. For these reasons, I chose to use **k-means clustering with 6 clusters** for the socioeconomic change analysis that follows.
 
@@ -330,11 +340,13 @@ What this code does is group by original cluster -> get median home value for ea
 
 The figure below shows violin plots for each of the features grouped by cluster number.
 
-![violins]({{ site.url }}/images/cluster_proj/violins.png)
+<!-- ![violins]({{ site.url }}/images/cluster_proj/violins.png) -->
+<img src="{{ site.url }}/images/cluster_proj/violins.png" width="700px">
 
 It's clear that logically ordering the clusters by median home value index helps to get a better intuition of the neighborhood socioeconomic information contained in each cluster. Education index and percent white follow the same ordering pattern as value index and would have yielded the same results. Income index, rent index, and percent employed had similar orderings but diverged for a few of the clusters.
 
-![observations per cluster]({{ site.url }}/images/cluster_proj/obs_per_cluster.png)
+<!-- ![observations per cluster]({{ site.url }}/images/cluster_proj/obs_per_cluster.png) -->
+<img src="{{ site.url }}/images/cluster_proj/obs_per_cluster.png" width="700px">
 
 Cluster 1 is the second largest group and contains the poorest neighborhoods, with home values, income, and education well below the 25th percentile. Cluster 2 displays similar characteristics to Cluster 1 except with a higher percentage of white population and the lowest employment rate. Cluster 3 contains the majority of observations (~39%), which is not surprising since the distribution of each feature for this cluster is centered squarely along the median in the violin plots. Cluster 4 has the highest rent and the second highest income, although the home values are only slightly above the median. Cluster 5 has higher home values than cluster 4 but lower rent and income. Cluster 6 is the smallest group and contains the most affluent neighborhoods in the Austin MSA. The variability of home values in cluster 6 is extremely large, with values ranging from \\$400,000 to \\$1.2 million. The same is true to a slightly lesser extent of income in this cluster.
 
@@ -342,7 +354,7 @@ There are many interesting insights that can be gleaned from the violin plots. L
 
 *The interactive map below shows the clustering for each neighborhood by year. Hover over each to see more information.*
 
-<figure>{% include clusters_by_year.html %}</figure> 
+<figure>{% include clusters_by_year.html %}</figure>
 
 ## Cluster Movement Between Years
 
@@ -364,29 +376,36 @@ def max_change(x):
 
 The if statement above checks whether the largest cluster occurs before or after the smallest cluster. If the largest cluster occurs before the smallest cluster, then the neighborhood is *deteriorating* (meaning that home values and other features are getting worse), and the neighborhood is *improving* if the opposite is true. I use the terms deteriorating and improving loosely here, because everything comes at a cost to someone. The breakdown of the max change is displayed in the figure below.
 
-![max change]({{ site.url }}/images/cluster_proj/max_change.png)
+<!-- ![max change]({{ site.url }}/images/cluster_proj/max_change.png) -->
+<img src="{{ site.url }}/images/cluster_proj/max_change.png" width="700px">
 
 Most of the neighborhoods (~32%) did not change clusters at all, which is not surprising. About 97% of neighborhoods changed by 2 or fewer clusters, which is also expected given that the difference between adjacent clusters is relatively small. The most interesting neighborhoods are the edge cases where the neighborhood moved through at least 3 clusters, specifically the 7 that moved by +4 clusters. The maps showing the maximum cluster change are below.
 
-![max change map]({{ site.url }}/images/cluster_proj/max_change_map.png)
+<!-- ![max change map]({{ site.url }}/images/cluster_proj/max_change_map.png) -->
+<img src="{{ site.url }}/images/cluster_proj/max_change_map.png" width="700px">
 
 Neighborhoods filled red are areas that deteriorated during this projects time-frame, with color intensity indicating the degree of change. Neighborhoods filled green are areas that improved. Neighborhoods which did not change cluster are not filled (or filled with 'none' color).
 
 The 7 neighborhoods which experienced a max change of +4 clusters are directly adjacent to the Downtown Austin area, with 3 of them occurring east of downtown and the remaining 4 residing south of downtown. Below is the average of each of these 7 neighborhoods over the time-frame of this project.
 
-![max change +4]({{ site.url }}/images/cluster_proj/max_change_4_mean.png)
+<!-- ![max change +4]({{ site.url }}/images/cluster_proj/max_change_4_mean.png) -->
+<img src="{{ site.url }}/images/cluster_proj/max_change_4_mean.png" width="700px">
 
 These neighborhoods saw on average a 242% change in home values (and in turn property taxes), a 140% change in income, and a 139% change in rent. The education level increased from less than a high school degree to at least some college while the percentage employed stayed relatively stable. However, the most disheartening change, and the final point of this project is the change in percent white within this grouping. These neighborhoods lost on average **one third** of their minority ethnicities.
 
 The most extreme loss of ethnic diversity occurred in census tract 8.03 (geoid 48453000803), which went from 22.25% white to 77.74% white in the span of 16 years. That's a loss of 55.50% of the minority population! This neighborhood is bounded by Interstate 35 to the west, the metro rail to the east, Martin Luther King Jr. Blvd. to the north, and East 12th street to the west (see map below).
 
-![tract 8.03]({{ site.url }}/images/cluster_proj/tract_803.png)
+<!-- ![tract 8.03]({{ site.url }}/images/cluster_proj/tract_803.png) -->
+<img src="{{ site.url }}/images/cluster_proj/tract_803.png" width="700px">
 
 It's extremely common now to drive through this neighborhood and see visual signs of "New Austin" vs "Old Austin", as seen in the images below, which are all taken from census tract 8.03.
 
-![modern vs original 1]({{ site.url }}/images/cluster_proj/modern_vs_original.png)
+<!-- ![modern vs original 1]({{ site.url }}/images/cluster_proj/modern_vs_original.png)
 ![modern vs original 2]({{ site.url }}/images/cluster_proj/modern_vs_original2.png)
-![modern vs original 3]({{ site.url }}/images/cluster_proj/modern_vs_original3.png)
+![modern vs original 3]({{ site.url }}/images/cluster_proj/modern_vs_original3.png) -->
+<img src="{{ site.url }}/images/cluster_proj/modern_vs_original.png" width="700px">
+<img src="{{ site.url }}/images/cluster_proj/modern_vs_original2.png" width="700px">
+<img src="{{ site.url }}/images/cluster_proj/modern_vs_original3.png" width="700px">
 
 ---
 
