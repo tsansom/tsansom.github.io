@@ -28,7 +28,6 @@ Positional spending data was only available for the 2013-2018 seasons so that is
 After scraping the data, each set was saved into separate csv files. Merging the csv files together yielded a dataset of 39 independent variables and 192 observations (32 teams \* 6 years) as well as a set of potential dependent variables.  
 
 ## Feature Descriptions
-
 Below is a description of each of the independent features that was scraped from the websites mentioned above.
 
 **Team** - Team abbreviation (2 or 3 characters)
@@ -81,3 +80,6 @@ Below is a description of each of the independent features that was scraped from
 * **nLB** - Number of linebackers
 * **nS** - Number of secondary players
 * **nST** - Number of special teams players
+
+
+## Exploratory Data Analysis
