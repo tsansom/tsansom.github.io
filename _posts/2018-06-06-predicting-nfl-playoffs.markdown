@@ -81,5 +81,37 @@ Below is a description of each of the independent features that was scraped from
 * **nS** - Number of secondary players
 * **nST** - Number of special teams players
 
+**Potential Target Variables**
+* **W** - Number of wins
+* **L** - Number of losses
+* **T** - Ties
+* **PF** - Points for
+* **PA** - Points against
+* **DIFF** - Point differential (PF-PA)
+* **Playoffs** - Made playoffs (1 = made playoffs, 0 = didn't make playoffs)
+* **SB_win** - Won Superbowl (1 = won superbowl, 0 = didn't win superbowl)
 
 ## Exploratory Data Analysis
+I always look at the correlation matrix first to get a feel for how each variable is related.
+
+<img src="{{ site.url }}/images/nfl/corr_map.png" width="800px">
+
+It's not surprising that the offensive features are highly correlated. For instance, the correlation between passer rating and completion percentage is 0.81. Below is the formula used by the NFL to calculate passer rating.
+
+![pr formula](http://1.bp.blogspot.com/--_PechQu8pM/UQwAtfO8HkI/AAAAAAAAAFE/RuOC-b7bcA0/s1600/passer+rating.png)
+
+The first term in the numerator $\frac{COMP}{ATT}$ is, in fact, completion percentage. There are other factors involved in calculating the passer rating which is why the correlation between passer rating and completion percentage is not 1.0.
+
+If I was using straight linear regression on all of the independent features, I would need to remove variables which are highly correlated with each other. I'll actually be using some feature selection techniques later so I don't need to bother with that at this point.
+
+Next, I'll look at the correlation between each independent variable and the number of wins to see which variables have the strongest individual relationship with my target variable. **Keep in mind that the team statistics are from the prior season and the positional salary and number of positional players are from the same season as when the wins were recorded**.
+
+<img src="{{ site.url }}/images/nfl/wins_corr.png" height="800px">
+
+Points scored per game by the offense has the strongest positive correlation with wins and points allowed per game by the defense has the strongest negative correlation. These plots are shown below
+
+<img src="{{ site.url }}/images/nfl/off_pts_vs_wins.png" width="800px">
+
+<img src="{{ site.url }}/images/nfl/def_pts_vs_wins.png" width="800px">
+
+Nobody should be alarmed by this, as I mentioned earlier, there is high inertia of professional sports. Something interesting that I noticed is that the number of tight ends, wide receivers, and secondary players on a team is negatively correlated with wins.
