@@ -247,3 +247,107 @@ The random forest regression model with the above hyperparameters has a validati
 <img src="{{ site.url }}/images/nfl/rf_feat_imp.png" width="800px">
 
 Well that's unexpected...the number of wide receivers on a team is the most important feature in this model followed closely by points per game allowed by the defense in the previous season.
+
+### Blended Models
+I tried 2 very simple blending techniques for this project. First was a simple average of the predictions of the 4 models described above which achieved a 0.209 validation $R^2$. The next was a linear regression of the 4 model predictions which achieved a validation $R^2$ of 0.286.
+
+## Results
+After building, training, and making predictions, each of the 4 models and the 2 blended models were constrained by conference and division to get the final predictions for teams that would make the playoffs. Here's what the actual playoff picture looked like in 2017:
+
+AFC Division Winners: NE, PIT, JAC, KC  
+NFC Division Winners: PHI, MIN, NO, LA  
+AFC Wild Cards: BUF, TEN  
+NFC Wild Cards: CAR, ATL  
+
+Below is the result for each of the model. <span style="color:green">Green</span> indicates a correctly predicted division winner or wild card team, <span style="color:orange">orange</span> indicates an incorrectly predicted division winner or wild card team but the team still made the playoffs in another capacity, while <span style="color:red">red</span> indicates an incorrect prediction of a team that did not make the playoffs.
+
+### Forward Subset Selection Linear Regression
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:green">KC</span>  
+NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:red">CHI</span>, <span style="color:orange">ATL</span>, <span style="color:green">LA</span>  
+AFC Wild Cards: <span style="color:orange">JAC</span>, <span style="color:red">DEN</span>  
+NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:red">DET</span>  
+
+**Division Winners**: 3/8  
+**Playoff Teams**: 8/12
+
+### Linear Regression with Principal Component Analysis
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:red">OAK</span>  
+NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:red">GB</span>, <span style="color:orange">ATL</span>, <span style="color:green">LA</span>  
+AFC Wild Cards: <span style="color:orange">KC</span>, <span style="color:red">DEN</span>  
+NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:orange">MIN</span>  
+
+**Division Winners**: 4/8  
+**Playoff Teams**: 8/12
+
+### Lasso Regression
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:green">KC</span>  
+NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:green">MIN</span>, <span style="color:orange">ATL</span>, <span style="color:green">LA</span>  
+AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">DEN</span>  
+NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:red">GB</span>  
+
+**Division Winners**: 5/8  
+**Playoff Teams**: 8/12
+
+### Random Forest Regression
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:green">KC</span>  
+NFC Division Winners: <span style="color:green">PHI</span>, <span style="color:red">GB</span>, <span style="color:orange">ATL</span>, <span style="color:red">SEA</span>  
+AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">BAL</span>  
+NFC Wild Cards: <span style="color:orange">MIN</span>, <span style="color:red">DAL</span>  
+
+**Division Winners**: 4/8
+**Playoff Teams**: 7/12
+
+### Average of Predictions
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:green">KC</span>  
+NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:red">GB</span>, <span style="color:orange">ATL</span>, <span style="color:green">LA</span>  
+AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">DEN</span>  
+NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:orange">MIN</span>  
+
+**Division Winners**: 4/8  
+**Playoff Teams**: 8/12
+
+### Linear Regression of Predictions
+AFC Division Winners: <span style="color:green">NE</span>, <span style="color:green">PIT</span>, <span style="color:orange">TEN</span>, <span style="color:green">KC</span>  
+NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:green">MIN</span>, <span style="color:orange">ATL</span>, <span style="color:red">SEA</span>  
+AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">BAL</span>  
+NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:red">GB</span>  
+
+**Division Winners**: 4/8
+**Playoff Teams**: 7/12
+
+## Discussion
+Although the linear regression blended model had the highest coefficient of determination ($R^2$), the lasso regression model had the best performance once constrained by conference and division, correctly predicting 5/8 division winners and 8/12 playoff teams.
+
+### NFL Future Odds
+***Disclaimer: This project is purely for educational purposes and should not be used for placing any bets.***
+
+Every year at the beginning of the season, Vegas puts out odds for each team to win their respective division. The table below summarizes how I would have done if I had used this model to place a $100 bet on each of the predicted division winners prior to the 2017 NFL season.
+
+|Team|Odds|Bet|Winnings|
+|----|----|---|------|
+|New England Patriots|1:14|$100.00|$7.14|
+|Pittsburgh Steelers|2:3|$100.00|$66.67|
+|Tennessee Titans|2:1|$100.00|$0.00|
+|Kansas City Chiefs|2:1|$100.00|$200.00|
+|Dallas Cowboys|5:4|$100.00|$0.00|
+|Minnesota Vikings|7:2|$100.00|$350.00|
+|Atlanta Falcons|8:5|$100.00|$0.00|
+|Los Angeles Rams|25:1|$100.00|$2,100.00|
+|**Total**|-|**$800.00**|**+$2,723.81**|
+
+That's a 341.48% return on investment. Clearly, picking the Los Angeles Rams to win their division at the beginning of last season would have been considered a long-shot but would have given solid winnings of \\$2,100 on a \\$100 bet. Even if that division were predicted incorrectly, I would have still achieved a 77.8% ROI. Not too shabby.
+
+### 2018 Predictions
+Here's what the lasso regression model predicts for the 2018 season (and their current odds to win their division):
+
+AFC Division Winners: NE(2:11), PIT(4:11), JAC(2:1), LAC(7:4)  
+NFC Division Winners: DAL(7:2), MIN(7:5), ATL(2:1), SEA(4:1)  
+AFC Wild Cards: BAL(9:2), TEN(7:2)  
+NFC Wild Cards: PHI(5:8), LA(4:5)
+
+So there's no long-shot odds for any of my predicted division winners, but if I placed \\$100 bets on each of the 8 predicted division winners today (5/11/18), I stand to gain a profit \\$1,519.54 if every prediction is correct.
+
+## Conclusion
+So for this project I scraped positional spending, number of positional players, offensive statistics, defensive statistics, and standings from the web. After exploring the relationships between the independent and dependent variables, I built 4 models to make predictions with and tried 2 model blending techniques. The predictions were constrained by NFL conference and division to predict division winners and playoff teams by predicted win percentage. I then calculated what my return on investment would be had I used these predictions to make bets on division winners prior to the 2017 season. I also presented my future predictions and potential profits if bets were placed today. I'll reiterate the disclaimer here just to CMA.
+
+***Disclaimer: This project is purely for educational purposes and should not be used for placing any bets.***
