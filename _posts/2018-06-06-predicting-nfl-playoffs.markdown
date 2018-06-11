@@ -108,10 +108,142 @@ Next, I'll look at the correlation between each independent variable and the num
 
 <img src="{{ site.url }}/images/nfl/wins_corr.png" height="800px">
 
-Points scored per game by the offense has the strongest positive correlation with wins and points allowed per game by the defense has the strongest negative correlation. These plots are shown below
+Points scored per game by the offense has the strongest positive correlation with wins and points allowed per game by the defense has the strongest negative correlation. These plots are shown below (I put a little jitter in the horizontal direction since wins is a discrete variable).
 
 <img src="{{ site.url }}/images/nfl/off_pts_vs_wins.png" width="800px">
 
 <img src="{{ site.url }}/images/nfl/def_pts_vs_wins.png" width="800px">
 
-Nobody should be alarmed by this, as I mentioned earlier, there is high inertia of professional sports. Something interesting that I noticed is that the number of tight ends, wide receivers, and secondary players on a team is negatively correlated with wins.
+Also not alarming, as I mentioned earlier there is high inertia of professional sports. Something interesting that I noticed is that the number of tight ends, wide receivers, and secondary players on a team is negatively correlated with wins. Perhaps teams have an excess of these position players when there is not a big-time, reliable playmaker to rely on?
+
+## Modeling
+For the modeling, I've decided that my target variable will be regular season win percentage. I'll just divide the wins by 16 (the number of regular season games). I'm going to build several models and compare the results. I'll also try blending some of the model results together in various ways.
+
+2013-2016 will be my training set and 2017 will be my validation set. Ideally, I would like to have a train, test, and validation set, but since there is just a few seasons worth of data, this will have to do. I guess 2018 can be my test set...but that's a long wait for the punchline.
+
+I'll use the coefficient of determination ($R^2$) and mean squared error ($MSE$) to evaluate initial model performance and compare models. Of more interest than these two quantities, however, is how the model does at predicting playoff teams once constrained by conference and division. What I mean is that after making predictions on win percentage,
+
+I'll separate the results by division (AFC East, NFC East, etc.). NFL playoffs consist of 12 teams: 8 division winners (4 from each conference) and 4 wild card teams (2 from each conference). The predicted winner of a division will be easy, it's simply the highest predicted win percentage inside that division. Wild card teams are a bit trickier, but not much. After taking the 4 division winners in a conference, The 2 teams with the next 2 highest predicted win percentage will be the wild card teams. I'll do this for both conferences until I have all 12 playoff teams that a specified model predicts.
+
+As mentioned earlier, many of the features are highly correlated so I will need to employ some sort of feature selection into my modeling framework.
+
+### Forward Subset Selection Linear Regression with Leave One Out Cross Validation
+I'll start simple with a forward selection linear regression model. Forward selection is a feature selection technique which starts by fitting a series of one-variable models on all features. The features which yields the one-variable model with the best performance (MSE in this case), will be carried forward to the next round where a series of two-variable models are fitted with each of the remaining unused variables. The best two-variable model is then carried forward and so on until all features are in the model. I'll keep track of MSE along the way to see which n-variable model yields the best validation performance.
+
+There's not a great package for subset selection in Python so I'll do it the old fashioned way. I'll be using leave one out cross validation, 10-fold would probably suffice and be much faster, but I've got time and wanted to see loocv in action. Here's my implementation:
+
+```python
+fs_models = {}
+
+unused_vars = X.columns
+model_vars = []
+
+lr = LinearRegression()
+
+loo = LeaveOneOut()
+
+mse = []
+
+for i in range(1, len(X.columns) + 1):
+    best_mse = 1e100
+    for var in unused_vars:
+        loo_mse = []
+        for train_index, test_index in loo.split(X):
+            X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+            y_train, y_test = y.iloc[train_index][target_var], y.iloc[test_index][target_var]
+            lr.fit(X_train[model_vars + [var]], y_train)
+            y_pred = lr.predict(X_test[model_vars + [var]])
+            loo_mse.append((y_test.values - y_pred) ** 2)
+        if np.mean(loo_mse) < best_mse:
+            best_mse = np.mean(loo_mse)
+            best_var = var
+    mse.append(best_mse)
+    model_vars.append(best_var)
+    unused_vars = unused_vars.drop(best_var)
+    fs_models[i] = [best_mse, model_vars.copy()]
+```
+
+<img src="{{ site.url }}/images/nfl/fs_lr.png" width="800px">
+
+The best model contains 13 features and has a validation $R^2$ of 0.056...not great.
+
+### Linear Regression with Principal Component Analysis
+For this next model, principal component analysis (PCA) will be my feature selection mechanism. I'll iteratively fit models to an increasing number of principal components, keeping track of the 10-fold cross validation score along the way.
+
+```python
+lr = LinearRegression()
+
+cv_scores = []
+
+for i in range(1, len(X.columns)+1):
+    pca = PCA(n_components=i)
+    X_pca = pca.fit_transform(X)
+    lr.fit(X_pca, y[target_var])
+    cv_scores.append(cross_val_score(lr, X_pca, y[target_var], cv=10).mean())
+
+cv_scores = np.array(cv_scores)
+best_n = cv_scores.argmax() + 1
+```
+
+<img src="{{ site.url }}/images/nfl/lr_pca.png" width="800px">
+
+The best model that comes out of this uses the first 15 principal components as predictive features and has a validation $R^2$ of 0.138.
+
+### Lasso Regression
+The Lasso regression algorithm inherently does feature selection by shrinking some of the linear regression coefficients to exactly zero via L1 regularization (unlike Ridge regression, which shrinks the regression coefficients toward but not to zero via L2 regularization). To tune the Lasso model, I'll loop through an array of alpha values and choose the alpha value that results in the lowest 10-fold cross validation MSE.
+
+```python
+alphas = np.linspace(.001, .1, 100)
+
+lasso = Lasso()
+
+kf = KFold(n_splits=10, random_state=rs)
+
+mse = []
+coefs = []
+for a in alphas:
+    lasso.set_params(alpha=a)
+    kf_mse = []
+    for train_index, test_index in kf.split(X):
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_test = y.iloc[train_index][target_var], y.iloc[test_index][target_var]
+        lasso.fit(X_train, y_train)
+        y_pred = lasso.predict(X_test)
+        kf_mse.append(np.mean((y_test.values - y_pred) ** 2))
+    lasso.fit(X, y[target_var])
+    coefs.append(lasso.coef_)
+    mse.append(np.mean(kf_mse))
+coefs = np.array(coefs)
+mse = np.array(mse)
+```
+
+<img src="{{ site.url }}/images/nfl/lasso.png" width="600px">
+
+The best Lasso model that falls out of this has a validation $R^2$ of 0.225.
+
+### Random Forest with Grid Search
+Last, I'll create a random forest regression model using grid search to optimize some of the hyperparameters.
+
+```python
+rf = RandomForestRegressor(n_estimators=100, random_state=rs)
+
+param_grid = {
+    'max_depth': range(1, 10),
+    'min_samples_leaf': range(1, 4),
+    'min_samples_split': range(2, 5)
+}
+
+gs = GridSearchCV(rf, param_grid, n_jobs=-1, cv=10)
+gs.fit(X, y[target_var])
+
+print(gs.best_params_)
+```
+```python
+{'max_depth': 4, 'min_samples_leaf': 1, 'min_samples_split': 2}
+```
+
+The random forest regression model with the above hyperparameters has a validation $R^2$ of 0.172. Here's what the feature importance for this model looks like.
+
+<img src="{{ site.url }}/images/nfl/rf_feat_imp.png" width="800px">
+
+Well that's unexpected...the number of wide receivers on a team is the most important feature in this model followed closely by points per game allowed by the defense in the previous season.
