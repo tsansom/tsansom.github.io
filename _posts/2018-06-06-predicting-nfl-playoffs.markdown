@@ -294,7 +294,7 @@ NFC Division Winners: <span style="color:green">PHI</span>, <span style="color:r
 AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">BAL</span>  
 NFC Wild Cards: <span style="color:orange">MIN</span>, <span style="color:red">DAL</span>  
 
-**Division Winners**: 4/8
+**Division Winners**: 4/8  
 **Playoff Teams**: 7/12
 
 ### Average of Predictions
@@ -312,7 +312,7 @@ NFC Division Winners: <span style="color:red">DAL</span>, <span style="color:gre
 AFC Wild Cards: <span style="color:red">OAK</span>, <span style="color:red">BAL</span>  
 NFC Wild Cards: <span style="color:orange">PHI</span>, <span style="color:red">GB</span>  
 
-**Division Winners**: 4/8
+**Division Winners**: 4/8  
 **Playoff Teams**: 7/12
 
 ## Discussion
