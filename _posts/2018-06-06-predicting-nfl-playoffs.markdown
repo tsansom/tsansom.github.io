@@ -332,10 +332,10 @@ Every year at the beginning of the season, Vegas puts out odds for each team to 
 |Dallas Cowboys|5:4|$100.00|$0.00|
 |Minnesota Vikings|7:2|$100.00|$350.00|
 |Atlanta Falcons|8:5|$100.00|$0.00|
-|Los Angeles Rams|25:1|$100.00|$2,100.00|
-|**Total**|-|**$800.00**|**+$2,723.81**|
+|Los Angeles Rams|25:1|$100.00|$2,500.00|
+|**Total**|-|**$800.00**|**+$3,123.81**|
 
-That's a 341.48% return on investment. Clearly, picking the Los Angeles Rams to win their division at the beginning of last season would have been considered a long-shot but would have given solid winnings of \\$2,100 on a \\$100 bet. Even if that division were predicted incorrectly, I would have still achieved a 77.8% ROI. Not too shabby.
+That's a 390.48% return on investment. Clearly, picking the Los Angeles Rams to win their division at the beginning of last season would have been considered a long-shot but would have given solid winnings of \\$2,500 on a \\$100 bet. Even if that division were predicted incorrectly, I would have still achieved a 77.8% ROI. Not too shabby.
 
 ### 2018 Predictions
 Here's what the lasso regression model predicts for the 2018 season (and their current odds to win their division):
